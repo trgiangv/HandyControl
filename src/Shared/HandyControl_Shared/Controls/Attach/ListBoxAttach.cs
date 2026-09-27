@@ -56,11 +56,24 @@ public class ListBoxAttach
 
     private static void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is ListBox listBox)
+        if (sender is not ListBox listBox || GetInternalAction(listBox))
+            return;
+
+        var selected = listBox.SelectedItems.Cast<object>().ToArray();
+        if (GetSelectedItems(listBox) is IList target
+            && !target.IsReadOnly
+            && !ReferenceEquals(target, listBox.SelectedItems))
         {
             SetInternalAction(listBox, true);
-            SetSelectedItems(listBox, listBox.SelectedItems.Cast<object>().ToArray());
+            target.Clear();
+            foreach (var item in selected)
+                target.Add(item);
             SetInternalAction(listBox, false);
+            return;
         }
+
+        SetInternalAction(listBox, true);
+        SetSelectedItems(listBox, selected);
+        SetInternalAction(listBox, false);
     }
 }
