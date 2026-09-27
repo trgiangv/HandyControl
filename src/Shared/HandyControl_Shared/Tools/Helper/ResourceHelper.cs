@@ -64,9 +64,15 @@ public class ResourceHelper
     /// </summary>
     /// <param name="skin"></param>
     /// <returns></returns>
+    public static Uri GetComponentUri(string relativePath)
+    {
+        var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+        return new Uri($"pack://application:,,,/{assemblyName};component/{relativePath}");
+    }
+
     public static ResourceDictionary GetSkin(SkinType skin) => new()
     {
-        Source = new Uri($"pack://application:,,,/HandyControl;component/Themes/Skin{skin}.xaml")
+        Source = GetComponentUri($"Themes/Skin{skin}.xaml")
     };
 
     /// <summary>
@@ -78,7 +84,7 @@ public class ResourceHelper
     {
         return new()
         {
-            Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
+            Source = GetComponentUri("Themes/Theme.xaml")
         };
     }
 }

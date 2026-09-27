@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Media.Effects;
+using HandyControl.Tools;
 
 namespace HandyControl.Media.Effects;
 
@@ -11,7 +12,7 @@ public class ColorComplementEffect : EffectBase
     {
         Shader = new PixelShader
         {
-            UriSource = new Uri("pack://application:,,,/HandyControl;component/Resources/Effects/ColorComplementEffect.ps")
+            UriSource = ResourceHelper.GetComponentUri("Resources/Effects/ColorComplementEffect.ps")
         };
     }
 

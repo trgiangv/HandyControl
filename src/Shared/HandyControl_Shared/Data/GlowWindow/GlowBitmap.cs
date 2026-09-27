@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using HandyControl.Tools;
 using HandyControl.Tools.Interop;
 
 namespace HandyControl.Data;
@@ -80,7 +81,7 @@ internal class GlowBitmap : DisposableObject
     {
         if (_transparencyMasks[(int) bitmapPart] == null)
         {
-            var bitmapImage = new BitmapImage(new Uri($"pack://application:,,,/HandyControl;Component/Resources/Images/GlowWindow/{bitmapPart}.png"));
+            var bitmapImage = new BitmapImage(ResourceHelper.GetComponentUri($"Resources/Images/GlowWindow/{bitmapPart}.png"));
 
             var array = new byte[BytesPerPixelBgra32 * bitmapImage.PixelWidth * bitmapImage.PixelHeight];
             var stride = BytesPerPixelBgra32 * bitmapImage.PixelWidth;

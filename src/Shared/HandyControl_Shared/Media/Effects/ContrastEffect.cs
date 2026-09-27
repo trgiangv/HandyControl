@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media.Effects;
 using HandyControl.Data;
+using HandyControl.Tools;
 
 namespace HandyControl.Media.Effects;
 
@@ -13,7 +14,7 @@ public class ContrastEffect : EffectBase
     {
         Shader = new PixelShader
         {
-            UriSource = new Uri("pack://application:,,,/HandyControl;component/Resources/Effects/ContrastEffect.ps")
+            UriSource = ResourceHelper.GetComponentUri("Resources/Effects/ContrastEffect.ps")
         };
     }
 

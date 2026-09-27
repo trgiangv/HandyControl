@@ -27,7 +27,7 @@ internal class ColorDropper
         {
             if (_dropperCursor == null)
             {
-                var info = Application.GetResourceStream(new Uri("pack://application:,,,/HandyControl;Component/Resources/dropper.cur"));
+                var info = Application.GetResourceStream(ResourceHelper.GetComponentUri("Resources/dropper.cur"));
                 if (info != null)
                 {
                     _dropperCursor = new Cursor(info.Stream);
