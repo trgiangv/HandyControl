@@ -77,6 +77,7 @@ Styles\Base\ChatBubbleBaseStyle.xaml
 Styles\Base\CheckComboBoxBaseStyle.xaml
 Styles\Base\ColorPickerBaseStyle.xaml
 Styles\Base\ContextMenuBaseStyle.xaml
+Styles\Base\TextEditorContextMenuStyle.xaml
 Styles\Base\CoverFlowBaseStyle.xaml
 Styles\Base\CoverViewBaseStyle.xaml
 Styles\Base\DatePickerBaseStyle.xaml

@@ -1041,6 +1041,7 @@
 		<Setter Property="hc:RectangleAttach.Circular" Value="True" />
 	</Style>
 	<Style x:Key="TextBoxBaseBaseStyle" TargetType="TextBoxBase">
+		<Setter Property="hc:TextEditorContextMenu.Active" Value="True" />
 		<Setter Property="Background" Value="{DynamicResource RegionBrush}" />
 		<Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
 		<Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
@@ -6412,6 +6413,17 @@
 			</MultiTrigger>
 		</Style.Triggers>
 	</Style>
+	<Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
+		<Setter Property="Height" Value="1" />
+		<Setter Property="Margin" Value="0,2" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Separator">
+					<Border Height="1" Background="{DynamicResource BorderBrush}" SnapsToDevicePixels="True" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 	<Style x:Key="MenuItemBaseStyle" TargetType="MenuItem">
 		<Setter Property="Padding" Value="{Binding Path=(hc:MenuAttach.ItemPadding),RelativeSource={RelativeSource AncestorType=MenuBase}}" />
 		<Setter Property="MinHeight" Value="{Binding Path=(hc:MenuAttach.ItemMinHeight),RelativeSource={RelativeSource AncestorType=MenuBase}}" />
@@ -6427,29 +6439,34 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="MenuItem">
-					<Border x:Name="templateRoot" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" MinWidth="240" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+					<Border x:Name="templateRoot" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 						<Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="26" />
+								<ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumn" />
 								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto" />
-								<ColumnDefinition Width="20" />
+								<ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup" />
 							</Grid.ColumnDefinitions>
-							<ContentPresenter Margin="0,0,10,0" x:Name="Icon" ContentSource="Icon" HorizontalAlignment="Right" Height="16" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16" />
-							<Border Margin="0,0,10,0" IsHitTestVisible="False" Grid.Column="0" x:Name="GlyphPanel" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" ClipToBounds="False" HorizontalAlignment="Right" Height="16" Visibility="Hidden" VerticalAlignment="Center" Width="16">
+							<ContentPresenter Margin="0,0,8,0" x:Name="Icon" ContentSource="Icon" HorizontalAlignment="Center" Height="16" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16" />
+							<Border Margin="0,0,8,0" IsHitTestVisible="False" Grid.Column="0" x:Name="GlyphPanel" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" ClipToBounds="False" HorizontalAlignment="Center" Height="16" Visibility="Collapsed" VerticalAlignment="Center" Width="16">
 								<Path UseLayoutRounding="True" Width="12" Height="12" Data="{StaticResource CheckedGeometry}" StrokeThickness="2" Stretch="Uniform" Stroke="{DynamicResource TextIconBrush}" />
 							</Border>
 							<ContentPresenter Grid.Column="1" x:Name="ContentPresenter" VerticalAlignment="Center" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentTemplate="{TemplateBinding HeaderTemplate}" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-							<TextBlock x:Name="InputGestureText" Margin="0,0,10,0" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{TemplateBinding InputGestureText}" />
+							<TextBlock x:Name="InputGestureText" Margin="16,0,0,0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{TemplateBinding InputGestureText}" />
 						</Grid>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible" />
+							<Setter Property="Visibility" TargetName="Icon" Value="Collapsed" />
 						</Trigger>
 						<Trigger Property="Icon" Value="{x:Null}">
 							<Setter Property="Visibility" TargetName="Icon" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="InputGestureText" Value="">
+							<Setter Property="Visibility" TargetName="InputGestureText" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="InputGestureText" Value="{x:Null}">
+							<Setter Property="Visibility" TargetName="InputGestureText" Value="Collapsed" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -6559,21 +6576,21 @@
 				<Setter Property="Template">
 					<Setter.Value>
 						<ControlTemplate TargetType="MenuItem">
-							<Border x:Name="templateRoot" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" MinWidth="240" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+							<Border x:Name="templateRoot" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
 								<Grid x:Name="Grid" Margin="{TemplateBinding Padding}">
 									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="26" />
+										<ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumn" />
 										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="30" />
-										<ColumnDefinition SharedSizeGroup="MenuItemIGTColumnGroup" Width="Auto" />
-										<ColumnDefinition Width="20" />
+										<ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup" />
+										<ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemArrowColumn" />
 									</Grid.ColumnDefinitions>
-									<ContentPresenter Margin="0,0,10,0" x:Name="Icon" ContentSource="Icon" HorizontalAlignment="Right" Height="16" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16" />
-									<Border Margin="0,0,10,0" IsHitTestVisible="False" Grid.Column="0" x:Name="GlyphPanel" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" ClipToBounds="False" HorizontalAlignment="Right" Height="16" Visibility="Hidden" VerticalAlignment="Center" Width="16">
+									<ContentPresenter Margin="0,0,8,0" x:Name="Icon" ContentSource="Icon" HorizontalAlignment="Center" Height="16" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="16" />
+									<Border Margin="0,0,8,0" IsHitTestVisible="False" Grid.Column="0" x:Name="GlyphPanel" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" ClipToBounds="False" HorizontalAlignment="Center" Height="16" Visibility="Collapsed" VerticalAlignment="Center" Width="16">
 										<Path UseLayoutRounding="True" Width="12" Height="12" Data="{StaticResource CheckedGeometry}" StrokeThickness="2" Stretch="Uniform" Stroke="{DynamicResource TextIconBrush}" />
 									</Border>
 									<ContentPresenter TextElement.Foreground="{TemplateBinding Foreground}" x:Name="ContentPresenter" ContentStringFormat="{TemplateBinding HeaderStringFormat}" VerticalAlignment="Center" ContentTemplate="{TemplateBinding HeaderTemplate}" Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-									<Path x:Name="Path" Grid.Column="4" Width="10" Height="10" HorizontalAlignment="Left" Data="{StaticResource RightGeometry}" Stretch="Uniform" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" />
+									<TextBlock x:Name="InputGestureText" Margin="16,0,0,0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{TemplateBinding InputGestureText}" />
+									<Path x:Name="Path" Grid.Column="3" Width="10" Height="10" Margin="12,0,0,0" HorizontalAlignment="Left" Data="{StaticResource RightGeometry}" Stretch="Uniform" Fill="{TemplateBinding Foreground}" VerticalAlignment="Center" />
 									<Popup Grid.Column="1" x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" VerticalOffset="{Binding Path=(hc:MenuAttach.PopupVerticalOffset),RelativeSource={RelativeSource AncestorType=MenuBase}}" HorizontalOffset="{Binding Path=(hc:MenuAttach.PopupHorizontalOffset),RelativeSource={RelativeSource AncestorType=MenuBase}}">
 										<Border Effect="{StaticResource EffectShadow2}" Margin="8" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" x:Name="SubMenuBorder" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Background="{DynamicResource RegionBrush}">
 											<ScrollViewer Style="{StaticResource ScrollViewerUpDown}" Margin="2,2,2,0">
@@ -6586,6 +6603,16 @@
 							<ControlTemplate.Triggers>
 								<Trigger Property="IsChecked" Value="True">
 									<Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible" />
+									<Setter Property="Visibility" TargetName="Icon" Value="Collapsed" />
+								</Trigger>
+								<Trigger Property="Icon" Value="{x:Null}">
+									<Setter Property="Visibility" TargetName="Icon" Value="Collapsed" />
+								</Trigger>
+								<Trigger Property="InputGestureText" Value="">
+									<Setter Property="Visibility" TargetName="InputGestureText" Value="Collapsed" />
+								</Trigger>
+								<Trigger Property="InputGestureText" Value="{x:Null}">
+									<Setter Property="Visibility" TargetName="InputGestureText" Value="Collapsed" />
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -6640,6 +6667,7 @@
 		</Setter>
 	</Style>
 	<Style x:Key="TextBoxBaseStyle" BasedOn="{StaticResource InputElementBaseStyle}" TargetType="TextBox">
+		<Setter Property="hc:TextEditorContextMenu.Active" Value="True" />
 		<Setter Property="CaretBrush" Value="{DynamicResource PrimaryTextBrush}" />
 		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
 		<Setter Property="AllowDrop" Value="true" />
@@ -8079,9 +8107,76 @@
 				<ControlTemplate TargetType="ContextMenu">
 					<Border Effect="{StaticResource EffectShadow2}" Margin="8" Background="{TemplateBinding Background}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius),RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{TemplateBinding MaxHeight}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{DynamicResource BorderBrush}">
 						<ScrollViewer Style="{StaticResource ScrollViewerUpDown}" Margin="{TemplateBinding Padding}">
-							<ItemsPresenter />
+							<ItemsPresenter Grid.IsSharedSizeScope="True" />
 						</ScrollViewer>
 					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="TextEditorContextMenuStyle" TargetType="ContextMenu">
+		<Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="2" />
+		<Setter Property="SnapsToDevicePixels" Value="True" />
+		<Setter Property="hc:BorderElement.CornerRadius" Value="{StaticResource DefaultCornerRadius}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ContextMenu">
+					<Border Margin="4" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(hc:BorderElement.CornerRadius), RelativeSource={RelativeSource TemplatedParent}}" Effect="{StaticResource EffectShadow2}" SnapsToDevicePixels="True">
+						<ItemsPresenter Margin="{TemplateBinding Padding}" />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="TextEditorMenuItemStyle" TargetType="MenuItem">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+		<Setter Property="Padding" Value="8,3" />
+		<Setter Property="Margin" Value="0" />
+		<Setter Property="MinHeight" Value="0" />
+		<Setter Property="OverridesDefaultStyle" Value="True" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="MenuItem">
+					<Border x:Name="Item" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" CornerRadius="2" SnapsToDevicePixels="True">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<ContentPresenter x:Name="Icon" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center" ContentSource="Icon" />
+							<ContentPresenter Grid.Column="1" VerticalAlignment="Center" ContentSource="Header" RecognizesAccessKey="True" />
+							<TextBlock x:Name="InputGestureText" Grid.Column="2" Margin="14,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource ThirdlyTextBrush}" Text="{TemplateBinding InputGestureText}" />
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="Icon" Value="{x:Null}">
+							<Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="InputGestureText" Value="">
+							<Setter TargetName="InputGestureText" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="IsHighlighted" Value="True">
+							<Setter TargetName="Item" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Opacity" Value="0.4" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="TextEditorMenuSeparatorStyle" TargetType="Separator">
+		<Setter Property="Height" Value="1" />
+		<Setter Property="Margin" Value="4,2" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Separator">
+					<Border Height="1" Background="{DynamicResource BorderBrush}" />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -9836,6 +9931,7 @@
 		</Style.Triggers>
 	</Style>
 	<Style x:Key="PasswordBoxBaseStyle" BasedOn="{StaticResource InputElementBaseStyle}" TargetType="PasswordBox">
+		<Setter Property="hc:TextEditorContextMenu.Active" Value="True" />
 		<Setter Property="PasswordChar" Value="●" />
 		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
 		<Setter Property="HorizontalContentAlignment" Value="Left" />
