@@ -243,6 +243,7 @@
 
     <!--可编辑下拉框中的输入框-->
     <Style x:Key="ComboBoxEditableTextBox" TargetType="TextBox">
+        <Setter Property="hc:TextEditorContextMenu.Active" Value="True" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="AllowDrop" Value="true" />
         <Setter Property="MinWidth" Value="0" />

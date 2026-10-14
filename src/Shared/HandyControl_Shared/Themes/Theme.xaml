@@ -5397,6 +5397,7 @@
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
 	<Style x:Key="ComboBoxEditableTextBox" TargetType="TextBox">
+		<Setter Property="hc:TextEditorContextMenu.Active" Value="True" />
 		<Setter Property="OverridesDefaultStyle" Value="true" />
 		<Setter Property="AllowDrop" Value="true" />
 		<Setter Property="MinWidth" Value="0" />
